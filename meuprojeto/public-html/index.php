@@ -6,7 +6,6 @@ use core\View;
 use core\Controller;
 use app\componentes\Helpers;
 
-$view = new View;
 /**
  * Retorna a uri da url
  * Array
@@ -16,16 +15,23 @@ $view = new View;
  *
 */
 $controller = new Controller();
-echo "<pre>"; var_dump($controller->getAction()); echo "</pre>";die;
+//echo "<pre>"; var_dump($controller->getController()); echo "</pre>";die;
 
 if( $controller->isHome() ):
   //echo "<pre>"; var_dump(Uri::isHome()); echo "</pre>";
+  $view = new View;
   $view->load('home');
 else:
   $controlador = $controller->getController();
-  $params = ( !empty(Uri::getParams()) ) ? Uri::getParams() : NULL;
-  $nameSpace = "app\\controllers\\".ucfirst($controller);
-  $Controller = new $nameSpace($action,$params);   
+  $params = ( !empty($controller->Uri()->getParams()) ) ? $controller->Uri()->getParams() : NULL;
+  $nameSpace = "app\\controllers\\".ucfirst($controlador);
+  
+  if( class_exists($nameSpace) ):
+    new $nameSpace($controller->getAction(),$params);
+  else:
+    echo "<pre>"; print_r('Erro'); echo "</pre>";
+  endif;
+  
 endif;
 
 
