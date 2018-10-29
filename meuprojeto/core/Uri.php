@@ -51,8 +51,12 @@ class Uri{
        *    [1] => php
        * )
        */
-      return $path = explode('/',$path);
+      if( preg_match('/^[a-z]+\/?$/', $path, $out) ){
+        $path = str_replace('/', '', $out[0]);
+      }
       
+      return $path = explode('/',$path);
+
     endif;
     
   }
@@ -61,7 +65,7 @@ class Uri{
     
     $path = $this->retPath();   
     $lenghtPath = count($path);
-    
+
     switch ($lenghtPath) {
       case ($lenghtPath > 2):
         # code...
@@ -74,7 +78,12 @@ class Uri{
         $this->action = strtolower($path[1]);
         $this->controller = ucfirst(strtolower($path[0]));
       break;
+      /**
+       * Caso o usuário só informe o controller então
+       * seta a action para index por padrão
+       */
       case ($lenghtPath == 1):
+        $this->action = 'index';
         $this->controller = ucfirst(strtolower($path[0]));
       break;
       default:
