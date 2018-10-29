@@ -1,0 +1,9 @@
+{
+  "description": "meu projeto",
+  "autoload":{
+    "psr-4":{
+      "app\\":"app/",
+      "core\\":"core/"
+    }
+  }
+}
